@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Band Name & Logo Vote</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #1a1a1a;
+            color: #fff;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        header {
+            text-align: center;
+            padding: 3rem 0;
+            border-bottom: 1px solid #333;
+            margin-bottom: 3rem;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #d4a574, #c9a227);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .subtitle {
+            color: #888;
+            font-size: 1.1rem;
+        }
+        .instructions {
+            background: #252525;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+        .instructions p {
+            color: #aaa;
+        }
+        .name-section {
+            margin-bottom: 4rem;
+        }
+        .name-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #333;
+        }
+        h2 {
+            font-size: 1.8rem;
+            color: #d4a574;
+        }
+        .style-tag {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            background: #333;
+            border-radius: 4px;
+            color: #888;
+        }
+        .logo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .logo-card {
+            background: #252525;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+        .logo-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+        }
+        .logo-card img {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+            display: block;
+        }
+        .logo-card .info {
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo-card .style {
+            font-size: 0.8rem;
+            color: #888;
+            text-transform: capitalize;
+        }
+        .logo-card .number {
+            font-size: 0.8rem;
+            color: #555;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal.active {
+            display: flex;
+        }
+        .modal img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 8px;
+        }
+        .modal-close {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            font-size: 2rem;
+            color: #fff;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            color: #555;
+            border-top: 1px solid #333;
+            margin-top: 3rem;
+        }
+        .vote-cta {
+            background: linear-gradient(135deg, #d4a574, #c9a227);
+            color: #000;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Help Us Pick a Name</h1>
+            <p class="subtitle">Folk / Bluegrass / Indie Folk Trio</p>
+        </header>
+
+        <div class="instructions">
+            <p>Click any logo to view it larger. Let us know which name + logo combinations resonate with you!</p>
+            <a href="mailto:corey@example.com?subject=Band%20Name%20Vote" class="vote-cta">Send Your Vote</a>
+        </div>
+
+        <section class="name-section" id="golden-thread">
+            <div class="name-header">
+                <h2>Golden Thread</h2>
+            </div>
+            <div class="logo-grid" id="golden-thread-grid"></div>
+        </section>
+
+        <section class="name-section" id="golden-hollow">
+            <div class="name-header">
+                <h2>Golden Hollow</h2>
+            </div>
+            <div class="logo-grid" id="golden-hollow-grid"></div>
+        </section>
+
+        <section class="name-section" id="ash-sparrow">
+            <div class="name-header">
+                <h2>Ash & Sparrow</h2>
+            </div>
+            <div class="logo-grid" id="ash-sparrow-grid"></div>
+        </section>
+
+        <footer>
+            <p>Generated with AI for exploration purposes</p>
+        </footer>
+    </div>
+
+    <div class="modal" id="modal">
+        <button class="modal-close" onclick="closeModal()">&times;</button>
+        <img id="modal-img" src="" alt="">
+    </div>
+
+    <script>
+        const logos = {
+            'golden-thread': [
+                { file: 'logo-golden-thread-folk-2026-01-20T21-29-56-224Z.png', style: 'folk' },
+                { file: 'logo-golden-thread-folk-2026-01-20T21-45-11-191Z.png', style: 'folk' },
+                { file: 'logo-golden-thread-folk-2026-01-20T21-45-15-243Z.png', style: 'folk' },
+                { file: 'logo-golden-thread-folk-2026-01-20T21-45-19-841Z.png', style: 'folk' },
+                { file: 'logo-golden-thread-folk-2026-01-20T21-45-24-481Z.png', style: 'folk' },
+                { file: 'logo-golden-thread-modern-2026-01-20T21-45-28-623Z.png', style: 'modern' },
+                { file: 'logo-golden-thread-modern-2026-01-20T21-45-32-795Z.png', style: 'modern' },
+                { file: 'logo-golden-thread-modern-2026-01-20T21-45-37-238Z.png', style: 'modern' },
+                { file: 'logo-golden-thread-minimal-2026-01-20T21-45-41-297Z.png', style: 'minimal' },
+                { file: 'logo-golden-thread-minimal-2026-01-20T21-45-45-546Z.png', style: 'minimal' },
+                { file: 'logo-golden-thread-minimal-2026-01-20T21-45-50-430Z.png', style: 'minimal' },
+            ],
+            'golden-hollow': [
+                { file: 'logo-golden-hollow-folk-2026-01-20T21-30-09-329Z.png', style: 'folk' },
+                { file: 'logo-golden-hollow-folk-2026-01-20T21-46-49-835Z.png', style: 'folk' },
+                { file: 'logo-golden-hollow-folk-2026-01-20T21-46-56-281Z.png', style: 'folk' },
+                { file: 'logo-golden-hollow-folk-2026-01-20T21-47-01-016Z.png', style: 'folk' },
+                { file: 'logo-golden-hollow-folk-2026-01-20T21-47-05-563Z.png', style: 'folk' },
+                { file: 'logo-golden-hollow-modern-2026-01-20T21-47-09-879Z.png', style: 'modern' },
+                { file: 'logo-golden-hollow-modern-2026-01-20T21-47-13-762Z.png', style: 'modern' },
+                { file: 'logo-golden-hollow-modern-2026-01-20T21-47-18-345Z.png', style: 'modern' },
+                { file: 'logo-golden-hollow-minimal-2026-01-20T21-47-22-167Z.png', style: 'minimal' },
+                { file: 'logo-golden-hollow-minimal-2026-01-20T21-47-26-550Z.png', style: 'minimal' },
+                { file: 'logo-golden-hollow-minimal-2026-01-20T21-47-30-484Z.png', style: 'minimal' },
+            ],
+            'ash-sparrow': [
+                { file: 'logo-ash-sparrow-folk-2026-01-20T21-30-12-917Z.png', style: 'folk' },
+                { file: 'logo-ash-sparrow-folk-2026-01-20T21-51-39-486Z.png', style: 'folk' },
+                { file: 'logo-ash-sparrow-folk-2026-01-20T21-51-44-768Z.png', style: 'folk' },
+                { file: 'logo-ash-sparrow-folk-2026-01-20T21-51-49-510Z.png', style: 'folk' },
+                { file: 'logo-ash-sparrow-folk-2026-01-20T21-51-54-290Z.png', style: 'folk' },
+                { file: 'logo-ash-sparrow-modern-2026-01-20T21-51-58-098Z.png', style: 'modern' },
+                { file: 'logo-ash-sparrow-modern-2026-01-20T21-52-02-464Z.png', style: 'modern' },
+                { file: 'logo-ash-sparrow-modern-2026-01-20T21-52-06-639Z.png', style: 'modern' },
+                { file: 'logo-ash-sparrow-minimal-2026-01-20T21-52-11-237Z.png', style: 'minimal' },
+                { file: 'logo-ash-sparrow-minimal-2026-01-20T21-52-14-985Z.png', style: 'minimal' },
+                { file: 'logo-ash-sparrow-minimal-2026-01-20T21-52-19-708Z.png', style: 'minimal' },
+            ]
+        };
+
+        function renderLogos() {
+            for (const [name, items] of Object.entries(logos)) {
+                const grid = document.getElementById(`${name}-grid`);
+                items.forEach((item, i) => {
+                    const card = document.createElement('div');
+                    card.className = 'logo-card';
+                    card.innerHTML = `
+                        <img src="images/${name}/${item.file}" alt="${name} logo ${i+1}" loading="lazy">
+                        <div class="info">
+                            <span class="style">${item.style}</span>
+                            <span class="number">#${i+1}</span>
+                        </div>
+                    `;
+                    card.onclick = () => openModal(`images/${name}/${item.file}`);
+                    grid.appendChild(card);
+                });
+            }
+        }
+
+        function openModal(src) {
+            document.getElementById('modal-img').src = src;
+            document.getElementById('modal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        document.getElementById('modal').onclick = (e) => {
+            if (e.target.id === 'modal') closeModal();
+        };
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        renderLogos();
+    </script>
+</body>
+</html>
